@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .game-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        #target {
+            position: absolute;
+            background: radial-gradient(circle, #ff0000 0%, #aa0000 70%, #880000 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        #target:active {
+            transform: scale(0.9);
+        }
+        #scoreboard {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #xp-container {
+            margin-top: 10px;
+            width: 500px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #xp-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.3s ease;
+        }
+        #start-screen, #game-over, #victory-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            z-index: 10;
+        }
+        #game-over, #victory-screen {
+            display: none;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #final-score {
+            font-size: 32px;
+            margin: 20px 0;
+        }
+        #bonus-text {
+            position: absolute;
+            font-weight: bold;
+            opacity: 0;
+            transition: all 0.5s;
+        }
+        #level-indicator {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div id="target"></div>
+        
+        <div id="start-screen">
+            <h1>Target Challenge</h1>
+            <p>Click on the target to fill your XP bar!</p>
+            <p>The challenge gets harder as you progress.</p>
+            <button id="start-game">Start Game</button>
+        </div>
+        
+        <div id="game-over">
+            <h1>Game Over!</h1>
+            <div id="final-score">Score: 0</div>
+            <button id="play-again">Play Again</button>
+        </div>
+        
+        <div id="victory-screen">
+            <h1>Victory!</h1>
+            <p>You've mastered the challenge!</p>
+            <div id="final-score-victory">Score: 0</div>
+            <button id="play-again-victory">Play Again</button>
+        </div>
+    </div>
+    
+    <div id="scoreboard">Score: 0</div>
+    <div id="timer">Time: 60s</div>
+    <div id="xp-container">
+        <div id="xp-bar"></div>
+    </div>
+    <div id="level-indicator">Progress: 0%</div>
+    <div id="bonus-text"></div>
+    
+    <script>
+        // Game variables
+        let score = 0;
+        let xp = 0;
+        let timeLeft = 60;
+        let gameInterval;
+        let targetSizeInterval;
+        let timerInterval;
+        let isGameRunning = false;
+        const maxXP = 100;
+        let missCount = 0;
+        const maxMisses = 3;
+        
+        // DOM elements
+        const gameContainer = document.querySelector('.game-container');
+        const target = document.getElementById('target');
+        const scoreboard = document.getElementById('scoreboard');
+        const timerElement = document.getElementById('timer');
+        const xpBar = document.getElementById('xp-bar');
+        const levelIndicator = document.getElementById('level-indicator');
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over');
+        const victoryScreen = document.getElementById('victory-screen');
+        const finalScore = document.getElementById('final-score');
+        const finalScoreVictory = document.getElementById('final-score-victory');
+        const playAgainBtn = document.getElementById('play-again');
+        const playAgainVictoryBtn = document.getElementById('play-again-victory');
+        const startGameBtn = document.getElementById('start-game');
+        const bonusText = document.getElementById('bonus-text');
+        
+        // Game settings
+        const gameSettings = {
+            baseMinSize: 30,  // Increased from 20
+            baseMaxSize: 100, // Increased from 80
+            baseSizeChangeSpeed: 0.8, // Decreased from 1.2
+            baseMoveSpeed: 1500, // Increased from 1000 (slower movement)
+            xpPerHit: 5
+        };
+        
+        // Start game button
+        startGameBtn.addEventListener('click', function(e) {
+            // Stop propagation to prevent this click from being registered as a miss
+            e.stopPropagation();
+            startGame();
+        });
+        
+        // Play again buttons
+        playAgainBtn.addEventListener('click', () => {
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        });
+        
+        playAgainVictoryBtn.addEventListener('click', () => {
+            victoryScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        });
+        
+        // Start the game
+        function startGame() {
+            // Reset variables
+            score = 0;
+            xp = 0;
+            timeLeft = 60;
+            missCount = 0;
+            isGameRunning = true;
+            
+            // Update UI
+            scoreboard.textContent = `Score: ${score}`;
+            timerElement.textContent = `Time: ${timeLeft}s`;
+            xpBar.style.width = '0%';
+            levelIndicator.textContent = `Progress: 0%`;
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            victoryScreen.style.display = 'none';
+            
+            // Initialize target
+            initializeTarget();
+            
+            // Start game loops
+            moveTarget();
+            startTargetSizeAnimation();
+            startTimer();
+            
+            // Add click event for missing the target - use a slight delay to prevent the start button click from registering as a miss
+            setTimeout(() => {
+                gameContainer.addEventListener('click', missTarget);
+            }, 100);
+        }
+        
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = `Time: ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    endGame("Time's up!");
+                }
+            }, 1000);
+        }
+        
+        function initializeTarget() {
+            const size = Math.floor((getMinSize() + getMaxSize()) / 2);
+            target.style.width = `${size}px`;
+            target.style.height = `${size}px`;
+            
+            // Position the target randomly
+            const maxX = gameContainer.clientWidth - size;
+            const maxY = gameContainer.clientHeight - size;
+            target.style.left = `${Math.floor(Math.random() * maxX)}px`;
+            target.style.top = `${Math.floor(Math.random() * maxY)}px`;
+            
+            // Click event
+            target.addEventListener('click', hitTarget);
+        }
+        
+        function moveTarget() {
+            gameInterval = setInterval(() => {
+                if (!isGameRunning) return;
+                
+                const size = parseInt(target.style.width);
+                const maxX = gameContainer.clientWidth - size;
+                const maxY = gameContainer.clientHeight - size;
+                
+                target.style.left = `${Math.floor(Math.random() * maxX)}px`;
+                target.style.top = `${Math.floor(Math.random() * maxY)}px`;
+            }, getMoveSpeed());
+        }
+        
+        function startTargetSizeAnimation() {
+            let size = (getMinSize() + getMaxSize()) / 2;
+            let growing = true;
+            
+            targetSizeInterval = setInterval(() => {
+                if (!isGameRunning) return;
+                
+                // Adjust difficulty based on progress
+                const sizeChangeSpeed = getSizeChangeSpeed();
+                
+                if (growing) {
+                    size += sizeChangeSpeed;
+                    if (size >= getMaxSize()) {
+                        size = getMaxSize();
+                        growing = false;
+                    }
+                } else {
+                    size -= sizeChangeSpeed;
+                    if (size <= getMinSize()) {
+                        size = getMinSize();
+                        growing = true;
+                    }
+                }
+                
+                target.style.width = `${size}px`;
+                target.style.height = `${size}px`;
+            }, 20);
+        }
+        
+        // Get difficulty-adjusted settings based on XP progress
+        function getProgressFactor() {
+            return xp / maxXP;
+        }
+        
+        function getMinSize() {
+            // Target gets smaller as progress increases, but not as extreme
+            const factor = getProgressFactor();
+            const minSize = gameSettings.baseMinSize * (1 - 0.3 * Math.pow(factor, 2)); // Reduced from 0.5
+            return Math.max(15, Math.floor(minSize)); // Increased min from 5
+        }
+        
+        function getMaxSize() {
+            // Maximum size also decreases with progress
+            const factor = getProgressFactor();
+            const maxSize = gameSettings.baseMaxSize * (1 - 0.2 * Math.pow(factor, 2)); // Reduced from 0.3
+            return Math.max(30, Math.floor(maxSize)); // Increased min from 15
+        }
+        
+        function getSizeChangeSpeed() {
+            // Speed increases with progress, but not as extreme
+            const factor = getProgressFactor();
+            return gameSettings.baseSizeChangeSpeed * (1 + 0.7 * factor); // Reduced from 1
+        }
+        
+        function getMoveSpeed() {
+            // Target moves faster as progress increases, but not as extreme
+            const factor = getProgressFactor();
+            return Math.max(500, Math.floor(gameSettings.baseMoveSpeed * (1 - 0.5 * factor))); // Reduced from 0.7, increased min from 300
+        }
+        
+        function hitTarget(event) {
+            if (!isGameRunning) return;
+            
+            // Stop event propagation to prevent missTarget from firing
+            event.stopPropagation();
+            
+            const size = parseInt(target.style.width);
+            
+            // Calculate points based on target size (smaller = more points)
+            const sizeRange = getMaxSize() - getMinSize();
+            const sizeRatio = (getMaxSize() - size) / sizeRange;
+            let points = Math.floor(10 + 40 * sizeRatio);
+            
+            // Add points to score
+            score += points;
+            scoreboard.textContent = `Score: ${score}`;
+            
+            // Add XP
+            const factor = getProgressFactor();
+            const xpGain = Math.max(2, Math.floor(gameSettings.xpPerHit * (1 - 0.3 * factor))); // Increased XP gain, less reduction
+            xp = Math.min(maxXP, xp + xpGain);
+            
+            // Update XP bar
+            const xpPercentage = (xp / maxXP) * 100;
+            xpBar.style.width = `${xpPercentage}%`;
+            levelIndicator.textContent = `Progress: ${Math.floor(xpPercentage)}%`;
+            
+            // Check for victory
+            if (xp >= maxXP) {
+                victory();
+                return;
+            }
+            
+            // Show bonus text
+            showBonusText(`+${points}`, event.clientX, event.clientY);
+            
+            // Move target immediately
+            const maxX = gameContainer.clientWidth - size;
+            const maxY = gameContainer.clientHeight - size;
+            target.style.left = `${Math.floor(Math.random() * maxX)}px`;
+            target.style.top = `${Math.floor(Math.random() * maxY)}px`;
+            
+            // Update game difficulty (recreate intervals)
+            clearInterval(gameInterval);
+            moveTarget();
+        }
+        
+        function missTarget(event) {
+            // Only count misses if we click on the game container but not on the target
+            if (!isGameRunning) return;
+            
+            // Make sure this event is coming from the game container directly, not bubbling up from the start button
+            if (event.target !== gameContainer) return;
+            
+            // Increment miss counter
+            missCount++;
+            
+            // Show miss indicator
+            showBonusText(`Miss! (${missCount}/${maxMisses})`, event.clientX, event.clientY, '#ff0000');
+            
+            // Check for game over
+            if (missCount >= maxMisses) {
+                endGame("Too many misses!");
+            }
+        }
+        
+        function showBonusText(text, x, y, color = null) {
+            bonusText.textContent = text;
+            bonusText.style.left = `${x}px`;
+            bonusText.style.top = `${y}px`;
+            bonusText.style.color = color || (score % 100 === 0 ? 'gold' : '#4CAF50');
+            bonusText.style.opacity = 1;
+            bonusText.style.fontSize = score % 100 === 0 ? '24px' : '20px';
+            
+            // Animate the bonus text
+            bonusText.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                bonusText.style.opacity = 0;
+                bonusText.style.transform = 'translateY(-20px)';
+            }, 500);
+        }
+        
+        function endGame(reason = "Game Over!") {
+            isGameRunning = false;
+            
+            // Clear intervals
+            clearInterval(gameInterval);
+            clearInterval(targetSizeInterval);
+            clearInterval(timerInterval);
+            
+            // Update UI
+            document.querySelector('#game-over h1').textContent = reason;
+            finalScore.textContent = `Score: ${score} | Progress: ${Math.floor((xp / maxXP) * 100)}%`;
+            gameOverScreen.style.display = 'flex';
+            
+            // Remove event listeners
+            target.removeEventListener('click', hitTarget);
+            gameContainer.removeEventListener('click', missTarget);
+        }
+        
+        function victory() {
+            isGameRunning = false;
+            
+            // Clear intervals
+            clearInterval(gameInterval);
+            clearInterval(targetSizeInterval);
+            clearInterval(timerInterval);
+            
+            // Update UI
+            finalScoreVictory.textContent = `Final Score: ${score} | Time: ${60 - timeLeft}s`;
+            victoryScreen.style.display = 'flex';
+            
+            // Remove event listeners
+            target.removeEventListener('click', hitTarget);
+            gameContainer.removeEventListener('click', missTarget);
+        }
+    </script>
+</body>
+</html>
