@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro Lirón de Robles - Professional Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #333333;
+            --light-color: #f7f7f7;
+            --gray-color: #757575;
+            --light-gray: #e5e5e5;
+            --white-color: #ffffff;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .header {
+            padding: 60px 0;
+            position: relative;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .profile-container {
+            position: relative;
+        }
+        
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border: 1px solid var(--light-gray);
+            float: right;
+        }
+        
+        .section {
+            padding: 70px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .card {
+            border: 1px solid var(--light-gray);
+            border-radius: 0;
+            box-shadow: none;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card-header {
+            background-color: var(--light-color);
+            border-bottom: 1px solid var(--light-gray);
+            font-weight: 500;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-left: 10px;
+            border-left: 2px solid var(--light-gray);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -41px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--white-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-content {
+            background-color: var(--white-color);
+            padding: 0;
+        }
+        
+        .skill-item {
+            background-color: var(--white-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            padding: 6px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-item:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .interest-item {
+            text-align: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .interest-item i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 2px;
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 2px;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-dark {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 2px;
+            padding: 10px 25px;
+        }
+        
+        .btn-outline-dark:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            width: 20px;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+        
+        .footer {
+            background-color: var(--light-color);
+            padding: 40px 0;
+        }
+        
+        .separator {
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+            margin: 30px 0;
+        }
+        
+        .name-title {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-weight: 400;
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+        
+        .highlight {
+            font-weight: 500;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 767px) {
+            .profile-img {
+                float: none;
+                margin: 0 auto 30px;
+                display: block;
+            }
+            
+            .header {
+                text-align: center;
+            }
+            
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .social-icons {
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-9">
+                    <h1 class="name-title display-4 mb-2">Pedro Lirón de Robles</h1>
+                    <h3 class="subtitle">Mathematics & Economics at Washington and Lee University</h3>
+                    <p class="lead">International student from Spain pursuing a BS in Mathematics and a BA in Economics. Interested in AI/Machine Learning, quantitative trading, and entrepreneurship.</p>
+                    <div class="mt-4">
+                        <a href="mailto:plironderobles@mail.wlu.edu" class="btn btn-primary me-3">Contact Me</a>
+                        <a href="#about" class="btn btn-outline-dark">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <img src="/api/placeholder/400/400" alt="Pedro Lirón de Robles" class="profile-img">
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <p>Hailing from Spain, I bring a global perspective to my academic pursuits in mathematics and economics at Washington and Lee University. As someone who deeply values personal health and well-being, I maintain a balanced approach to academic rigor and personal development.</p>
+                    <p>With strong self-beliefs guiding my path, I am driven by a passion for analytical problem-solving and creating innovative solutions. My goal is to leverage quantitative skills to lead transformative projects and eventually establish myself as an entrepreneur who empowers others to achieve their potential.</p>
+                    <div class="social-icons mt-4">
+                        <a href="https://www.linkedin.com/in/pedrolironderobles" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank" rel="noopener"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Education Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Washington and Lee University</h4>
+                        <div class="timeline-date">September 2024 - May 2028 (Expected)</div>
+                        <p>BS in Mathematics & BA in Economics</p>
+                        <p><i class="fas fa-map-marker-alt me-2 text-muted"></i>Lexington, Virginia, United States</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Woodberry Forest School</h4>
+                        <div class="timeline-date">August 2023 - May 2024</div>
+                        <p>Exchange Student through ASSIST Program</p>
+                        <p><i class="fas fa-award me-2 text-muted"></i>Awarded scholarship to study at Woodberry Forest School</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Oxford Royale Academy</h4>
+                        <div class="timeline-date">2021 - 2022</div>
+                        <p>Mathematics Program at Oxford University</p>
+                        <p><i class="fas fa-book me-2 text-muted"></i>Completed research project on Linear Algebra</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Everest School Monteclaro</h4>
+                        <div class="timeline-date">2008 - 2023</div>
+                        <p>High School Diploma</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">E-Cafe Restaurant</h4>
+                        <div class="timeline-date">October 2024 - Present</div>
+                        <p>Work-study position at Washington & Lee University</p>
+                        <p><i class="fas fa-map-marker-alt me-2 text-muted"></i>Lexington, Virginia, United States</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Skills & Interests</h2>
+            <div class="row mb-5">
+                <div class="col-md-6 fade-in">
+                    <h4 class="mb-3">Technical Skills</h4>
+                    <div>
+                        <span class="skill-item">Mathematics</span>
+                        <span class="skill-item">Economics</span>
+                        <span class="skill-item">Data Analysis</span>
+                        <span class="skill-item">Quantitative Research</span>
+                        <span class="skill-item">Problem Solving</span>
+                        <span class="skill-item">Critical Thinking</span>
+                    </div>
+                </div>
+                <div class="col-md-6 fade-in">
+                    <h4 class="mb-3">Areas of Interest</h4>
+                    <div>
+                        <span class="skill-item">AI/Machine Learning</span>
+                        <span class="skill-item">Quantitative Trading</span>
+                        <span class="skill-item">Entrepreneurship</span>
+                        <span class="skill-item">Financial Modeling</span>
+                        <span class="skill-item">Data Science</span>
+                        <span class="skill-item">Algorithmic Trading</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="separator"></div>
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="mb-4">Key Interests</h4>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 fade-in">
+                    <div class="interest-item">
+                        <i class="fas fa-brain"></i>
+                        <h5>Innovation</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 fade-in">
+                    <div class="interest-item">
+                        <i class="fas fa-heartbeat"></i>
+                        <h5>Health & Fitness</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 fade-in">
+                    <div class="interest-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h5>Market Analysis</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 fade-in">
+                    <div class="interest-item">
+                        <i class="fas fa-globe-europe"></i>
+                        <h5>Global Perspective</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ambitions Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Ambitions & Goals</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-4 fade-in">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-rocket me-2"></i> Entrepreneurial Leadership
+                        </div>
+                        <div class="card-body">
+                            <p>My goal is to establish myself as an independent entrepreneur and business leader, creating innovative ventures that solve real-world problems while generating sustainable value.</p>
+                            <p>I aspire to become a visionary who empowers teams to achieve their highest potential through collaborative problem-solving and clear communication.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4 fade-in">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-robot me-2"></i> AI & Quantitative Finance
+                        </div>
+                        <div class="card-body">
+                            <p>I'm passionate about exploring the intersection of artificial intelligence, machine learning, and financial markets to develop cutting-edge trading strategies and risk management tools.</p>
+                            <p>My ambition is to create innovative algorithms that can identify market inefficiencies and generate consistent returns while adapting to changing market conditions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0 fade-in">
+                    <h3 class="mb-4">Contact Information</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:plironderobles@mail.wlu.edu" class="text-decoration-none text-dark">plironderobles@mail.wlu.edu</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Washington and Lee University, Lexington, VA</span>
+                        </li>
+                        <li>
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://www.linkedin.com/in/pedrolironderobles" target="_blank" rel="noopener" class="text-decoration-none text-dark">linkedin.com/in/pedrolironderobles</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 fade-in">
+                    <h3 class="mb-4">Get In Touch</h3>
+                    <p>I'm always open to discussing new projects, opportunities, or collaborations. Feel free to reach out!</p>
+                    <a href="mailto:plironderobles@mail.wlu.edu" class="btn btn-primary mt-3">
+                        <i class="far fa-paper-plane me-2"></i>Send Message
+                    </a>
+                </div>
+            </div>
+            <hr class="mt-5 mb-4" style="opacity: 0.1;">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Pedro Lirón de Robles. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Smooth scrolling
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                
+                var target = this.hash;
+                var $target = $(target);
+                
+                $('html, body').animate({
+                    'scrollTop': $target.offset().top - 70
+                }, 800, 'swing');
+            });
+            
+            // Fade in elements on scroll
+            function revealOnScroll() {
+                var scrolled = $(window).scrollTop();
+                var win_height_padded = $(window).height() * 1.1;
+                
+                $(".fade-in").each(function() {
+                    var $this = $(this);
+                    var offsetTop = $this.offset().top;
+                    
+                    if (scrolled + win_height_padded > offsetTop) {
+                        $this.addClass('visible');
+                    }
+                });
+            }
+            
+            // Run once on load
+            revealOnScroll();
+            
+            // Run on scroll
+            $(window).on('scroll', revealOnScroll);
+            
+            // Initialize tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</body>
+</html>
