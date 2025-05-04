@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro Liron de Robles - Personal Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --white: #ffffff;
+            --caribbean-current: #407076;
+            --fairy-tale: #e1bbc9;
+            --oxford-blue: #02182b;
+            --celadon: #b4e7ce;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            color: var(--oxford-blue);
+            line-height: 1.8;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+        
+        .main-container {
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+        
+        .card {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--celadon) 0%, var(--caribbean-current) 100%);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .profile-img {
+            width: 280px;
+            height: 350px;
+            border-radius: 20px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            padding: 5px;
+            background-color: var(--white);
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+        }
+        
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+        
+        .btn-custom {
+            background-color: var(--fairy-tale);
+            color: var(--oxford-blue);
+            border-radius: 30px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-custom:hover {
+            background-color: var(--oxford-blue);
+            color: var(--white);
+        }
+        
+        .about-section {
+            background-color: var(--white);
+            padding: 2.5rem;
+        }
+        
+        .about-icon {
+            background-color: var(--celadon);
+            color: var(--oxford-blue);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        
+        .skill-pill {
+            background-color: var(--caribbean-current);
+            color: var(--white);
+            border-radius: 30px;
+            padding: 0.4rem 1.2rem;
+            margin: 0.3rem;
+            display: inline-block;
+        }
+        
+        .footer {
+            background-color: var(--oxford-blue);
+            color: var(--white);
+            border-radius: 0 0 20px 20px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--fairy-tale);
+            color: var(--oxford-blue);
+        }
+        
+        .divider {
+            height: 4px;
+            width: 60px;
+            background: linear-gradient(to right, var(--fairy-tale), var(--celadon));
+            margin: 1.5rem 0;
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-header {
+                text-align: center;
+            }
+            
+            .profile-img {
+                width: 200px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="card">
+            <!-- Header Section -->
+            <div class="profile-header">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center">
+                        <div class="profile-img">
+                            <!-- INSTRUCTION: Replace "your-image.jpg" with your actual image file -->
+                            <img src="https://uploads.image1.io/1718215257017_Pedro_headshot_newest.jpg" alt="Pedro Liron de Robles">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h1 class="mb-2">Pedro Liron de Robles</h1>
+                        <p class="fs-5 mb-3">Mathematics & Economics Student</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-envelope me-2"></i>
+                            <span>plironderobles@mail.wlu.edu</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-4">
+                            <i class="fas fa-university me-2"></i>
+                            <span>Washington and Lee University</span>
+                        </div>
+                        <a href="#" class="btn btn-custom">
+                            <i class="fas fa-file-alt me-2"></i> View Resume
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- About Section -->
+            <div class="about-section">
+                <h2 class="mb-3">About Me</h2>
+                <div class="divider"></div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="about-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h5 class="mb-0">Major</h5>
+                        </div>
+                        <p class="ms-5">Mathematics and Economics</p>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="about-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h5 class="mb-0">Hometown</h5>
+                        </div>
+                        <p class="ms-5">Madrid, Spain</p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <p>Hi! I'm Pedro, an international student passionate about entrepreneurship and its power to connect diverse areas of life.</p>
+                    
+                    <p>I'm deeply interested in modern theoretical physics—particularly quantum mechanics—and in the foundational role that axioms play in mathematics. I'm fascinated by how humans can describe and predict physical phenomena using mathematical frameworks built on unprovable assumptions.</p>
+                    
+                    <p>In my free time, I enjoy playing high-speed chess, keeping up with the latest developments in AI, and staying active through running, and playing soccer and golf.</p>
+                </div>
+                
+                <h4 class="mb-3">Interests</h4>
+                <div class="divider"></div>
+                
+                <div class="d-flex align-items-center mb-2">
+                    <div class="about-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h5 class="mb-0">Interests</h5>
+                </div>
+                
+                <div class="ms-5">
+                    <span class="skill-pill">Entrepreneurship</span>
+                    <span class="skill-pill">Mathematics</span>
+                    <span class="skill-pill">Theoretical Physics</span>
+                    <span class="skill-pill">Quantum Mechanics</span>
+                    <span class="skill-pill">Chess</span>
+                    <span class="skill-pill">Artificial Intelligence</span>
+                    <span class="skill-pill">Soccer</span>
+                    <span class="skill-pill">Golf</span>
+                    <span class="skill-pill">Running</span>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="mb-3">
+                    <a href="#" class="social-icon me-3">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:plironderobles@mail.wlu.edu" class="social-icon">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+                <p class="mb-0">© 2025 Pedro Liron de Robles. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
